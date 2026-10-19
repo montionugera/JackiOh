@@ -446,7 +446,12 @@ pub enum EvalKind {
 
 /// The switch: one line turns the learned evaluation on or off. A promotion that ships a network sets
 /// it with the weights in one change (#1012).
-pub const AI_EVAL_KIND: EvalKind = EvalKind::Hand;
+///
+/// Generation 13 (the unban lane) turned it on with #1258's six-seed network: measured +0.090
+/// confirm / +0.113 fresh over 1,600 paired games against the hand eval at half the correction
+/// (`docs/learned-eval.md`, TD(0.3) relabelled twice), and about +.03 on this lane's own gate
+/// families. R1012003 still keeps the tutorial's seats on the hand eval, and Duos never left it.
+pub const AI_EVAL_KIND: EvalKind = EvalKind::Learned;
 
 /// R1012001: the share of the network's correction a finalist's score takes, `hand + share·(points
 /// − hand)` (`learned::finalist_score_with`). The network is fitted to the games' outcomes, so its

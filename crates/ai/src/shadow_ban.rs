@@ -254,6 +254,15 @@
 /// #1186's sweep of the Meditative+ set (R1186000) banned none of its 26
 /// cards, so the seventeen stand as generation 12 left them, and the set's
 /// 11 at-risk cards are watched.
+///
+/// Generation 13 removed two entries — 025 and 031 — with the learned
+/// evaluation on (#1258's six-seed network, `AI_EVAL_KIND = Learned`): both
+/// sweep clean at either tier on this build, flag-free where generation 9
+/// timed them out, and both read positive in the gate's own deals (held
+/// win rates .56 and .62 over the dry family, with sweep deltas to match).
+/// The broader held-winning sets measured a drag in the same deals, so the
+/// release stays at these two, dealt at stock weight and not in
+/// `UNBANNED_PREFER`.
 pub const SHADOW_BAN: &[(&str, &str)] = &[
     (
         "meditative-011",
@@ -268,20 +277,12 @@ pub const SHADOW_BAN: &[(&str, &str)] = &[
         "timeout: hard: 13 decision(s) over 2000 ms or game(s) past 600 actions",
     ),
     (
-        "meditative-025",
-        "timeout: hard: 7 decision(s) over 2000 ms or game(s) past 600 actions",
-    ),
-    (
         "meditative-029",
         "timeout: easy: 1 decision(s) over 2000 ms or game(s) past 600 actions; hard: 1 decision(s) over 2000 ms or game(s) past 600 actions",
     ),
     (
         "meditative-030",
         "timeout: easy: 3 decision(s) over 2000 ms or game(s) past 600 actions; hard: 2 decision(s) over 2000 ms or game(s) past 600 actions",
-    ),
-    (
-        "meditative-031",
-        "timeout: hard: 1 decision(s) over 2000 ms or game(s) past 600 actions",
     ),
     (
         "meditative-049",
@@ -338,7 +339,7 @@ pub const SHADOW_BAN_IDS: &[&str] = &{
 
 /// R732000, R1186000: the ids the unban lane has removed from the reports of record's `SHADOW_BAN`
 /// entries, sorted by id (generation 10: 021, 033, 047, 051, 063, 073, 092; 11: 041, 067, 080; 12:
-/// 006, 016, 045, 068; the notes above `SHADOW_BAN`). `cargo jackioh sweep --write` leaves their rows
+/// 006, 016, 045, 068; 13: 025, 031; the notes above `SHADOW_BAN`). `cargo jackioh sweep --write` leaves their rows
 /// out of `SHADOW_BAN`, and refuses an id no report of record bans. The lane unbans a card by adding
 /// its id here and running `cargo jackioh sweep --write`; a new sweep of a set drops its own ids from
 /// this list.
@@ -346,6 +347,8 @@ pub const SHADOW_UNBANNED: &[&str] = &[
     "meditative-006",
     "meditative-016",
     "meditative-021",
+    "meditative-025",
+    "meditative-031",
     "meditative-033",
     "meditative-041",
     "meditative-045",

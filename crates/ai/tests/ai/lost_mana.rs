@@ -63,11 +63,16 @@ fn r844_r1012005_with_one_spare_crystal_the_ai_keeps_expedition12_rather_than_lo
 
 #[test]
 fn r844_r1012005_when_its_radiant_face_doubles_a_four_drop_the_ai_still_casts_expedition12() {
-    if !the_hand_eval_decides() {
-        return;
-    }
     let state = position(&[EXPEDITION, SILAS]);
+    // The hand eval casts for the doubled four-drop; the learned evaluation keeps the refresh
+    // for tempo on all three seeds (R1012001's correction prices the kept line higher).
+    let casts = the_hand_eval_decides();
     for seed in ["r844-cast-a", "r844-cast-b", "r844-cast-c"] {
-        assert!(casts_expedition(&state, seed), "it kept the card on {seed}");
+        assert_eq!(
+            casts_expedition(&state, seed),
+            casts,
+            "seed {seed} under {:?}",
+            AI_EVAL_KIND
+        );
     }
 }
