@@ -21,7 +21,7 @@ use anyhow::{anyhow, bail};
 use indexmap::IndexMap;
 use serde::Serialize;
 
-use jackioh_engine::wire::{DEV_RECORD_ID_PREFIX, GameSource, parse_game_record_lines};
+use jackioh_engine::wire::{DEV_RECORD_ID_PREFIX, GameSource, forced_series, parse_game_record_lines};
 
 use crate::cli::card_stats::literal;
 use crate::cli::{connect_one, database_url};
@@ -84,6 +84,18 @@ pub async fn import_dev_records(db: &Db, contents: &str) -> anyhow::Result<Impor
         bail!(
             "record {} is a development record whose id does not begin \"{DEV_RECORD_ID_PREFIX}\" (R378)",
             misnamed.id
+        );
+    }
+
+    // R1284000: a forced run's records are for `stats compare` and `stats report`, never for
+    // `stats-import`: a file holding one is refused whole, so rigged games can never count as a
+    // sample of All Random.
+    if let Some(forced) = records.iter().find(|record| forced_series(record).is_some()) {
+        // `forced_series` is `Some` here, so the series exists.
+        let series = forced_series(forced).unwrap_or_default();
+        bail!(
+            "record {} is a forced-run record (series \"{series}\"); a forced run is for stats compare and stats report, never for stats-import (R1284000)",
+            forced.id
         );
     }
 
